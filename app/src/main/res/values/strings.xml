@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">QRCode Scanner</string>
+    <string name="sorry">Sorry, Couldn\'t setup the detector</string>
+    <string name="scan">SCAN</string>
 </resources>

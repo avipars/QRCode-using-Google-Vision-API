@@ -14,7 +14,7 @@
         android:id="@+id/scanbtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SCAN"
+        android:text="@string/scan"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
     <TextView

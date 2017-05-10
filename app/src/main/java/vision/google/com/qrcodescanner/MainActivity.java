@@ -1,18 +1,22 @@
 package vision.google.com.qrcodescanner;
 
-import android.*;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.vision.barcode.Barcode;
+
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     Button scanbtn;
@@ -36,7 +40,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    public static boolean isValidURL(String urlString)
+    {
+        try
+        {
+            URL url = new URL(urlString);
+            url.toURI();
+            return true;
+        } catch (Exception exception)
+        {
+            return false;
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK){
@@ -45,7 +60,25 @@ public class MainActivity extends AppCompatActivity {
                 result.post(new Runnable() {
                     @Override
                     public void run() {
-                        result.setText(barcode.displayValue);
+                        //result.setText(barcode.displayValue);
+                        // Use a CustomTabsIntent.Builder to configure CustomTabsIntent.
+                        // Once ready, call CustomTabsIntent.Builder.build() to create a CustomTabsIntent
+                        // and launch the desired Url with CustomTabsIntent.launchUrl()
+                        String preRender = barcode.displayValue;
+                        if (isValidURL(preRender)){
+                            String url = barcode.displayValue;
+                            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                            CustomTabsIntent customTabsIntent = builder.build();
+                            builder.setToolbarColor(Color.TRANSPARENT);
+                            customTabsIntent.launchUrl(MainActivity.this, Uri.parse(url));
+                        }
+                        else
+                        {
+                            result.setText(barcode.displayValue);
+                        }
+
+
+
                     }
                 });
             }
